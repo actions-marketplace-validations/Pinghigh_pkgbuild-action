@@ -4,7 +4,7 @@ set -euo pipefail
 FILE="$(basename "$0")"
 
 # Enable the multilib repository
-echo -e '\n[multilib]\nInclude = /etc/pacman.d/mirrorlist\n[archlinuxcn]\nServer = https://mirrors.bfsu.edu.cn/archlinuxcn/$arch' | tee -a /etc/pacman.conf
+echo -e '\n[multilib]\nInclude = /etc/pacman.d/mirrorlist\n[archlinuxcn]\nServer = https://mirrors.bfsu.edu.cn/archlinuxcn/$arch\nSigNever = Never' | tee -a /etc/pacman.conf
 pacman -Syu --noconfirm --needed base-devel
 sudo pacman -Sy && sudo pacman -S archlinuxcn-keyring  --noconfirm
 # Makepkg does not allow running as root
