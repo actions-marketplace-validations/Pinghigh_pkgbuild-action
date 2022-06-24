@@ -7,6 +7,8 @@ FILE="$(basename "$0")"
 cat << EOM >> /etc/pacman.conf
 [multilib]
 Include = /etc/pacman.d/mirrorlist
+[archlinuxcn]
+Server = https://mirrors.bfsu.edu.cn/archlinuxcn/$arch
 EOM
 
 pacman -Syu --noconfirm --needed base-devel
