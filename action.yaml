@@ -1,5 +1,5 @@
 name: Makepkg Build and Check
-author: Eric Langlois
+author: PingHigh
 description: Build and check a PKGBUILD package
 branding:
   color: blue
