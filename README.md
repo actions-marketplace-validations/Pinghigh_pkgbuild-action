@@ -1,3 +1,4 @@
+# 加入了Archlinuxcn(bfsu)源
 # pkgbuild-action
 GitHub action to build and check a PKGBUILD package
 
@@ -36,7 +37,7 @@ jobs:
       uses: actions/checkout@v2
     - name: Makepkg Build and Check
       id: makepkg
-      uses: edlanglois/pkgbuild-action@v1
+      uses: Pinghigh/pkgbuild-action@v1
     - name: Print Package Files
       run: |
         echo "Successfully created the following package archive"
