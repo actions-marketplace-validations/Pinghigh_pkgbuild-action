@@ -6,7 +6,15 @@ FILE="$(basename "$0")"
 # Enable the multilib repository
 echo -e '\n[multilib]\nInclude = /etc/pacman.d/mirrorlist\n[archlinuxcn]\nServer = https://mirrors.bfsu.edu.cn/archlinuxcn/$arch' | tee -a /etc/pacman.conf
 pacman -Syu --noconfirm --needed base-devel
-
+sudo pacman -Sy && sudo pacman -S archlinuxcn-keyring  --noconfirm
+sudo pacman -Syu haveged
+sudo systemctl start haveged
+sudo systemctl enable haveged
+sudo rm -fr /etc/pacman.d/gnupg
+sudo pacman-key --init
+sudo pacman-key --populate archlinux
+sudo pacman-key --populate archlinuxcn
+sudo pacman -Sy && sudo pacman -S archlinuxcn-keyring  --noconfirm
 # Makepkg does not allow running as root
 # Create a new user `builder`
 # `builder` needs to have a home directory because some PKGBUILDs will try to
