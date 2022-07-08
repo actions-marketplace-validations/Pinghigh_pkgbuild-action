@@ -1,4 +1,4 @@
-# 加入了Archlinuxcn(bfsu)源
+# 加入了Archlinuxcn(xtom aliyun)源
 # pkgbuild-action
 GitHub action to build and check a PKGBUILD package
 
