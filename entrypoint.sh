@@ -31,18 +31,12 @@ fi
 
 # Optionally install dependencies from AUR
 if [ -n "${INPUT_AURDEPS:-}" ]; then
-	# First install yay
-	pacman -S --noconfirm --needed git
-	git clone https://aur.archlinux.org/yay-bin.git /tmp/yay
-	pushd /tmp/yay
-	chmod -R a+rw .
-	sudo -H -u builder makepkg --syncdeps --install --noconfirm
-	popd
-
+	# First install paru
+	pacman -S --noconfirm --needed paru
 	# Extract dependencies from .SRCINFO (depends or depends_x86_64) and install
 	mapfile -t PKGDEPS < \
 		<(sed -n -e 's/^[[:space:]]*\(make\)\?depends\(_x86_64\)\? = \([[:alnum:][:punct:]]*\)[[:space:]]*$/\3/p' .SRCINFO)
-	sudo -H -u builder yay --sync --noconfirm "${PKGDEPS[@]}"
+	sudo -H -u builder paru --sync --noconfirm "${PKGDEPS[@]}"
 fi
 
 # Make the builder user the owner of these files
