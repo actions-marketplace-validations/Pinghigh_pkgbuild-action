@@ -22,6 +22,18 @@ chmod -R a+rw .
 BASEDIR="$PWD"
 cd "${INPUT_PKGDIR:-.}"
 
+# Make the builder user the owner of these files
+# Without this, (e.g. only having every user have read/write access to the files),
+# makepkg will try to change the permissions of the files itself which will fail since it does not own the files/have permission
+# we can't do this earlier as it will change files that are for github actions, which results in warnings in github actions logs.
+chown -R builder .
+
+# Build packages
+# INPUT_MAKEPKGARGS is intentionally unquoted to allow arg splitting
+# shellcheck disable=SC2086
+sudo -H -u builder updpkgsums
+sudo -H -u builder makepkg --printsrcinfo > .SRCINFO
+
 # Assume that if .SRCINFO is missing then it is generated elsewhere.
 # AUR checks that .SRCINFO exists so a missing file can't go unnoticed.
 if [ -f .SRCINFO ] && ! sudo -u builder makepkg --printsrcinfo | diff - .SRCINFO; then
@@ -39,16 +51,6 @@ if [ -n "${INPUT_AURDEPS:-}" ]; then
 	sudo -H -u builder paru --sync --noconfirm "${PKGDEPS[@]}"
 fi
 
-# Make the builder user the owner of these files
-# Without this, (e.g. only having every user have read/write access to the files),
-# makepkg will try to change the permissions of the files itself which will fail since it does not own the files/have permission
-# we can't do this earlier as it will change files that are for github actions, which results in warnings in github actions logs.
-chown -R builder .
-
-# Build packages
-# INPUT_MAKEPKGARGS is intentionally unquoted to allow arg splitting
-# shellcheck disable=SC2086
-sudo -H -u builder updpkgsums
 sudo -H -u builder makepkg --syncdeps --noconfirm ${INPUT_MAKEPKGARGS:-}
 
 # Get array of packages to be built
