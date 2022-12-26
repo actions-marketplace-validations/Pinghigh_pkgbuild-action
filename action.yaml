@@ -21,6 +21,10 @@ inputs:
     description: "A comma-separated list of rules for namcap not to run."
     required: false
     default: ""
+  makepkgArgs:
+    description: "Additional arguments to pass to makepkg."
+    required: false
+    default: ""
 outputs:
   pkgfile0:
     description: "Filename of the first generated package archive. Usually only one."

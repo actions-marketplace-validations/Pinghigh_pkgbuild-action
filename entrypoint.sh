@@ -34,7 +34,7 @@ chown -R builder .
 pacman -S --noconfirm --needed paru
 sudo -H -u builder updpkgsums
 
-sudo -H -u builder paru -U --noconfirm 
+sudo -H -u builder paru -U --noconfirm --mflags "${INPUT_MAKEPKGARGS:-}"
 # Get array of packages to be built
 mapfile -t PKGFILES < <( sudo -u builder makepkg --packagelist )
 echo "Package(s): ${PKGFILES[*]}"
