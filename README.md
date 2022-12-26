@@ -2,10 +2,11 @@
 # pkgbuild-action
 GitHub action to build and check a PKGBUILD package
 
+Replace makepkg with paru by Pinghigh
+
 ## Features
-* Checks that .SRCINFO matches PKGBUILD if .SRCINFO exists
-* Builds package(s) with makepkg (configurable arguments)
-* Runs on a bare minimum Arch Linux install to help detect missing dependencies
+* Builds package(s) with paru
+* Runs on a bare minimum Arch Linux install to help detect missing dependencies (support AUR dependence)
 * Outputs built package archives
 * Checks PKGBUILD and package archives with [namcap](https://wiki.archlinux.org/index.php/namcap)
 
@@ -13,11 +14,9 @@ GitHub action to build and check a PKGBUILD package
 Inputs:
 * `pkgdir`: Relative path to directory containing the PKGBUILD file
             (repo root by default).
-* `aurDeps`: Support AUR dependencies if nonempty.
 * `namcapDisable`: Disable namcap checks if nonempty.
 * `namcapRules`: A comma-separated list of rules for namcap to run.
 * `namcapExcludeRules`: A comma-separated list of rules for namcap not to run.
-* `makepkgArgs`: Additional arguments to pass to `makepkg`.
 
 Outputs:
 * `pkgfileN`: Filename of Nth built package archive (ordered as `makepkg --packagelist`).

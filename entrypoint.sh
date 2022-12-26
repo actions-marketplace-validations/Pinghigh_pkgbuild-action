@@ -31,28 +31,10 @@ chown -R builder .
 # Build packages
 # INPUT_MAKEPKGARGS is intentionally unquoted to allow arg splitting
 # shellcheck disable=SC2086
+pacman -S --noconfirm --needed paru
 sudo -H -u builder updpkgsums
-sudo -H -u builder makepkg --printsrcinfo > .SRCINFO
 
-# Assume that if .SRCINFO is missing then it is generated elsewhere.
-# AUR checks that .SRCINFO exists so a missing file can't go unnoticed.
-if [ -f .SRCINFO ] && ! sudo -u builder makepkg --printsrcinfo | diff - .SRCINFO; then
-	echo "::error file=$FILE,line=$LINENO::Mismatched .SRCINFO. Update with: makepkg --printsrcinfo > .SRCINFO"
-	exit 1
-fi
-
-# Optionally install dependencies from AUR
-if [ -n "${INPUT_AURDEPS:-}" ]; then
-	# First install paru
-	pacman -S --noconfirm --needed paru
-	# Extract dependencies from .SRCINFO (depends or depends_x86_64) and install
-	mapfile -t PKGDEPS < \
-		<(sed -n -e 's/^[[:space:]]*\(make\)\?depends\(_x86_64\)\? = \([[:alnum:][:punct:]]*\)[[:space:]]*$/\3/p' .SRCINFO)
-	sudo -H -u builder paru --sync --noconfirm "${PKGDEPS[@]}"
-fi
-
-sudo -H -u builder makepkg --syncdeps --noconfirm ${INPUT_MAKEPKGARGS:-}
-
+sudo -H -u builder paru -U --noconfirm 
 # Get array of packages to be built
 mapfile -t PKGFILES < <( sudo -u builder makepkg --packagelist )
 echo "Package(s): ${PKGFILES[*]}"
