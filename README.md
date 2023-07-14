@@ -1,8 +1,7 @@
-# 加入了 Archlinuxcn(xtom aliyun) CachyOS 源
 # pkgbuild-action
 GitHub action to build and check a PKGBUILD package
 
-Replace makepkg with paru by Pinghigh
+Replace makepkg with paru (then you can add AUR dependences easily) and add cachyos, archlinuxcn software repo by Pinghigh.
 
 ## Features
 * Builds package(s) with paru
@@ -37,7 +36,7 @@ jobs:
       uses: actions/checkout@v2
     - name: Makepkg Build and Check
       id: makepkg
-      uses: Pinghigh/pkgbuild-action@v4.2
+      uses: Pinghigh/pkgbuild-action@v5.1
     - name: Print Package Files
       run: |
         echo "Successfully created the following package archive"
